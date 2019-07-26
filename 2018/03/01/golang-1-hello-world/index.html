@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>Go 入门教程（1）Hello World | 王海的博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Notes,Go,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="我疯狂地挥舞着键盘，郑重地敲下了：Hello World。">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">王海的博客</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="https://www.whai.me">
+          
+            <a 
+              href="https://www.whai.me"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>Go 入门教程（1）Hello World</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2018-03-01
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Notes/">
+            Notes
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="golang-1-hello-world"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>Go 语言是由谷歌开发的一个开源的编译型的静态语言，官方网站：<a href="https://golang.org/" target="_blank" rel="noopener">golang.org</a></p>
+<h2 id="搭建开发环境"><a href="#搭建开发环境" class="headerlink" title="搭建开发环境"></a>搭建开发环境</h2><h3 id="Windows-安装"><a href="#Windows-安装" class="headerlink" title="Windows 安装"></a>Windows 安装</h3><h4 id="1-下载安装包"><a href="#1-下载安装包" class="headerlink" title="1. 下载安装包"></a>1. 下载安装包</h4><p>访问下载地址 <a href="https://golang.org/dl/" target="_blank" rel="noopener">golang.org/dl/</a> ，选择 Windows 64位对应的 Zip 下载包 <code>go1.10.windows-amd64.zip</code> ，目前最新版本为 <code>1.10</code> 。如果你的操作系统是32位，请选择对应的32位下载包。<br><img src="http://img.whai.me/2018/03/go-1-download.png-watermark" alt="下载安装包"></p>
+<h4 id="2-解压并安装"><a href="#2-解压并安装" class="headerlink" title="2. 解压并安装"></a>2. 解压并安装</h4><p>这里我们将 Go 语言安装到 <code>D</code> 盘，所以将下载好的Zip包解压到D盘，得到目录 <code>D:\go</code> 。该目录中包含了Go语言工具链和标准库的源码。<br><img src="http://img.whai.me/2018/03/go-1-folder.png-watermark" alt="Go 安装目录"></p>
+<h4 id="3-设置环境变量和工作目录"><a href="#3-设置环境变量和工作目录" class="headerlink" title="3. 设置环境变量和工作目录"></a>3. 设置环境变量和工作目录</h4><p>我们创建 <code>D:\gowork</code> 目录设定为工作目录，工作目录约定必须包含三个子目录，分别为 <code>src</code> 、 <code>pkg</code> 和 <code>bin</code> ，我们所有的源代码都必须放在 <code>src</code> 目录下。</p>
+<ul>
+<li>src 存放源代码文件</li>
+<li>pkg 编译后生成的文件（比如：.a）</li>
+<li>bin 编译后生成的可执行文件</li>
+</ul>
+<p>进入 <code>高级系统设置-&gt;环境变量</code> ，添加如下两个系统环境变量</p>
+<ul>
+<li><code>GOROOT</code> Go语言的安装目录（D:\go）</li>
+<li><code>GOPATH</code> Go语言全局工作目录（D:\gowork）</li>
+</ul>
+<p><img src="http://img.whai.me/2018/03/go-1-sysvariable.png-watermark" alt="设置环境变量"></p>
+<p>编辑 <code>Path</code> 变量，在后面追加 <code>%GOROOT%\bin</code> 和 <code>%GOPATH%\bin</code> 。<br><img src="http://img.whai.me/2018/03/go-1-sysvariable-path.png-watermark" alt="设置环境变量"></p>
+<h4 id="4-安装完成"><a href="#4-安装完成" class="headerlink" title="4. 安装完成"></a>4. 安装完成</h4><p>打开命令行工具，输入 <code>go version</code> 命令，可以看到输出了我们安装的Go语言版本号。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator&gt;go version</span><br><span class="line">go version go1.10 windows/amd64</span><br></pre></td></tr></table></figure></p>
+<p>输入 <code>go env</code> 可以查看与Go语言相关的环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator&gt;go env</span><br><span class="line">set GOARCH=amd64</span><br><span class="line">set GOBIN=</span><br><span class="line">set GOCACHE=C:\Users\Administrator\AppData\Local\go-build</span><br><span class="line">set GOEXE=.exe</span><br><span class="line">set GOHOSTARCH=amd64</span><br><span class="line">set GOHOSTOS=windows</span><br><span class="line">set GOOS=windows</span><br><span class="line">set GOPATH=D:\gowork</span><br><span class="line">set GORACE=</span><br><span class="line">set GOROOT=D:\go</span><br><span class="line">set GOTMPDIR=</span><br><span class="line">set GOTOOLDIR=D:\go\pkg\tool\windows_amd64</span><br><span class="line">set GCCGO=gccgo</span><br><span class="line">set CC=gcc</span><br><span class="line">set CXX=g++</span><br><span class="line">set CGO_ENABLED=1</span><br><span class="line">set CGO_CFLAGS=-g -O2</span><br><span class="line">set CGO_CPPFLAGS=</span><br><span class="line">set CGO_CXXFLAGS=-g -O2</span><br><span class="line">set CGO_FFLAGS=-g -O2</span><br><span class="line">set CGO_LDFLAGS=-g -O2</span><br><span class="line">set PKG_CONFIG=pkg-config</span><br><span class="line">set GOGCCFLAGS=-m64 -mthreads -fno-caret-diagnostics -Qunused-arguments -fmessage-length=0 -fdebug-prefix-map=C:\Users\ADMINI~1\AppData\Local\Temp\go-build479232602=/tmp/go-build -gno-record-gcc-switches</span><br></pre></td></tr></table></figure>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>我们在上一步安装的时候已经建立好了我们的 Go 工作区，即 <code>GOPATH</code> 环境变量对应的目录 <code>D:\gowork</code> ，并提到我们所有的 Go 源文件都应该放置在工作区目录里的 <code>src</code> 目录下。</p>
+<h4 id="1-创建-helloworld-go-文件"><a href="#1-创建-helloworld-go-文件" class="headerlink" title="1. 创建 helloworld.go 文件"></a>1. 创建 helloworld.go 文件</h4><p>在 <code>src</code> 目录下创建一个目录 <code>hello</code> 来存放我们的整个 hello world 项目源代码。在 hello 目录下创建一个 <code>helloworld.go</code> 文件并编写以下代码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;  </span><br><span class="line">    fmt.Println(&quot;Hello World&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这时程序的结构目录如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">D:\gowork\src\</span><br><span class="line">    hello\</span><br><span class="line">        helloworld.go</span><br></pre></td></tr></table></figure></p>
+<h4 id="2-编译应用"><a href="#2-编译应用" class="headerlink" title="2. 编译应用"></a>2. 编译应用</h4><p>我们的应用已经创建好了，现在有两种方式进行安装。</p>
+<ul>
+<li>进入对应的应用包目录（即 D:\gowork\src\hello），然后执行 <code>go install</code> 命令，即可安装。</li>
+<li>在任意的目录下执行命令 <code>go install hello</code> ，go 工具会在工作区中搜索 hello 包。</li>
+</ul>
+<p>安装后，它会在工作区的 bin 目录下，创建一个名为 hello 的二进制文件（在 Windows 下名为 <code>hello.exe</code> ）。此时在命令行下输入 <code>hello</code> 命令，便可以执行我们的应用，并输出 Hello World。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\Administrator&gt;hello</span><br><span class="line">Hello World</span><br></pre></td></tr></table></figure></p>
+<p><em>因为我们在安装的时候，已经将工作目录里的 bin 目录添加到 path 环境变量中了，所以在命令行中的任意目录下都可以直接执行我们的应用。</em></p>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : 王海 <br/>
+        
+        原文链接 : <a href="">https://blog.whai.me/2018/03/01/golang-1-hello-world/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/Go/">
+              #Go
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2018/02/11/ghost-themes/" target="_self">Ghost 主题收录</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2018/03/03/golang-2-install-vscode/" target="_self">Go 入门教程（2）安装配置 Visual Studio Code</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz",
+      appKey: "WlHSVnCdyWtotqoPUPn1NQuQ",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz", "WlHSVnCdyWtotqoPUPn1NQuQ");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    我疯狂地挥舞着键盘，郑重地敲下了：<span class="my-face">Hello World</span>
+    <br>
+    Theme - <a href="#">BMW</a>  💗 Powered by <a href="https://www.whai.me">王海</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

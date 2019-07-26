@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>58到家数据库30条军规解读 | 王海的博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Notes,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="我疯狂地挥舞着键盘，郑重地敲下了：Hello World。">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">王海的博客</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="https://www.whai.me">
+          
+            <a 
+              href="https://www.whai.me"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>58到家数据库30条军规解读</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2018-04-12
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Notes/">
+            Notes
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="zhuan-58dao-jia-shu-ju-ku-30tiao-jun-gui-jie-du"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <p>军规适用场景：并发量大、数据量大的互联网业务<br>军规：介绍内容<br>解读：讲解原因，解读比军规更重要</p>
+<h2 id="一、基础规范"><a href="#一、基础规范" class="headerlink" title="一、基础规范"></a>一、基础规范</h2><p>（1）必须使用InnoDB存储引擎<br>解读：支持事务、行级锁、并发性能更好、CPU及内存缓存页优化使得资源利用率更高</p>
+<p>（2）必须使用UTF8字符集<br>解读：万国码，无需转码，无乱码风险，节省空间</p>
+<p>（3）数据表、数据字段必须加入中文注释<br>解读：N年后谁tm知道这个r1,r2,r3字段是干嘛的</p>
+<p>（4）禁止使用存储过程、视图、触发器、Event<br>解读：高并发大数据的互联网业务，架构设计思路是“解放数据库CPU，将计算转移到服务层”，并发量大的情况下，这些功能很可能将数据库拖死，业务逻辑放到服务层具备更好的扩展性，能够轻易实现“增机器就加性能”。数据库擅长存储与索引，CPU计算还是上移吧</p>
+<p>（5）禁止存储大文件或者大照片<br>解读：为何要让数据库做它不擅长的事情？大文件和照片存储在文件系统，数据库里存URI多好</p>
+<h2 id="二、命名规范"><a href="#二、命名规范" class="headerlink" title="二、命名规范"></a>二、命名规范</h2><p>（6）只允许使用内网域名，而不是ip连接数据库</p>
+<p>（7）线上环境、开发环境、测试环境数据库内网域名遵循命名规范<br>业务名称：xxx<br>线上环境：dj.xxx.db<br>开发环境：dj.xxx.rdb<br>测试环境：dj.xxx.tdb<br>从库在名称后加-s标识，备库在名称后加-ss标识<br>线上从库：dj.xxx-s.db<br>线上备库：dj.xxx-sss.db</p>
+<p>（8）库名、表名、字段名：小写，下划线风格，不超过32个字符，必须见名知意，禁止拼音英文混用</p>
+<p>（9）表名t_xxx，非唯一索引名idx_xxx，唯一索引名uniq_xxx</p>
+<h2 id="三、表设计规范"><a href="#三、表设计规范" class="headerlink" title="三、表设计规范"></a>三、表设计规范</h2><p>（10）单实例表数目必须小于500</p>
+<p>（11）单表列数目必须小于30</p>
+<p>（12）表必须有主键，例如自增主键<br>解读：<br>a）主键递增，数据行写入可以提高插入性能，可以避免page分裂，减少表碎片提升空间和内存的使用<br>b）主键要选择较短的数据类型， Innodb引擎普通索引都会保存主键的值，较短的数据类型可以有效的减少索引的磁盘空间，提高索引的缓存效率<br>c） 无主键的表删除，在row模式的主从架构，会导致备库夯住</p>
+<p>（13）禁止使用外键，如果有外键完整性约束，需要应用程序控制<br>解读：外键会导致表与表之间耦合，update与delete操作都会涉及相关联的表，十分影响sql 的性能，甚至会造成死锁。高并发情况下容易造成数据库性能，大数据高并发业务场景数据库使用以性能优先</p>
+<h2 id="四、字段设计规范"><a href="#四、字段设计规范" class="headerlink" title="四、字段设计规范"></a>四、字段设计规范</h2><p>（14）必须把字段定义为NOT NULL并且提供默认值<br>解读：<br>a）null的列使索引/索引统计/值比较都更加复杂，对MySQL来说更难优化<br>b）null 这种类型MySQL内部需要进行特殊处理，增加数据库处理记录的复杂性；同等条件下，表中有较多空字段的时候，数据库的处理性能会降低很多<br>c）null值需要更多的存储空，无论是表还是索引中每行中的null的列都需要额外的空间来标识<br>d）对null 的处理时候，只能采用is null或is not null，而不能采用=、in、&lt;、&lt;&gt;、!=、not in这些操作符号。如：where name!=’shenjian’，如果存在name为null值的记录，查询结果就不会包含name为null值的记录</p>
+<p>（15）禁止使用TEXT、BLOB类型<br>解读：会浪费更多的磁盘和内存空间，非必要的大量的大字段查询会淘汰掉热数据，导致内存命中率急剧降低，影响数据库性能</p>
+<p>（16）禁止使用小数存储货币<br>解读：使用整数吧，小数容易导致钱对不上</p>
+<p>（17）必须使用varchar(20)存储手机号<br>解读：<br>a）涉及到区号或者国家代号，可能出现+-()<br>b）手机号会去做数学运算么？<br>c）varchar可以支持模糊查询，例如：like“138%”</p>
+<p>（18）禁止使用ENUM，可使用TINYINT代替<br>解读：<br>a）增加新的ENUM值要做DDL操作<br>b）ENUM的内部实际存储就是整数，你以为自己定义的是字符串？</p>
+<h2 id="五、索引设计规范"><a href="#五、索引设计规范" class="headerlink" title="五、索引设计规范"></a>五、索引设计规范</h2><p>（19）单表索引建议控制在5个以内</p>
+<p>（20）单索引字段数不允许超过5个<br>解读：字段超过5个时，实际已经起不到有效过滤数据的作用了</p>
+<p>（21）禁止在更新十分频繁、区分度不高的属性上建立索引<br>解读：<br>a）更新会变更B+树，更新频繁的字段建立索引会大大降低数据库性能<br>b）“性别”这种区分度不大的属性，建立索引是没有什么意义的，不能有效过滤数据，性能与全表扫描类似</p>
+<p>（22）建立组合索引，必须把区分度高的字段放在前面<br>解读：能够更加有效的过滤数据</p>
+<h2 id="六、SQL使用规范"><a href="#六、SQL使用规范" class="headerlink" title="六、SQL使用规范"></a>六、SQL使用规范</h2><p>（23）禁止使用 <code>SELECT *</code>，只获取必要的字段，需要显示说明列属性<br>解读：<br>a）读取不需要的列会增加CPU、IO、NET消耗<br>b）不能有效的利用覆盖索引<br>c）使用SELECT *容易在增加或者删除字段后出现程序BUG</p>
+<p>（24）禁止使用INSERT INTO t_xxx VALUES(xxx)，必须显示指定插入的列属性<br>解读：容易在增加或者删除字段后出现程序BUG</p>
+<p>（25）禁止使用属性隐式转换<br>解读：SELECT uid FROM t_user WHERE phone=13812345678 会导致全表扫描，而不能命中phone索引，猜猜为什么？（这个线上问题不止出现过一次）</p>
+<p>（26）禁止在WHERE条件的属性上使用函数或者表达式<br>解读：SELECT uid FROM t_user WHERE from_unixtime(day)&gt;=’2017-02-15’ 会导致全表扫描<br>正确的写法是：SELECT uid FROM t_user WHERE day&gt;= unix_timestamp(‘2017-02-15 00:00:00’)</p>
+<p>（27）禁止负向查询，以及%开头的模糊查询<br>解读：<br>a）负向查询条件：NOT、!=、&lt;&gt;、!&lt;、!&gt;、NOT IN、NOT LIKE等，会导致全表扫描<br>b）%开头的模糊查询，会导致全表扫描</p>
+<p>（28）禁止大表使用JOIN查询，禁止大表使用子查询<br>解读：会产生临时表，消耗较多内存与CPU，极大影响数据库性能</p>
+<p>（29）禁止使用OR条件，必须改为IN查询<br>解读：旧版本Mysql的OR查询是不能命中索引的，即使能命中索引，为何要让数据库耗费更多的CPU帮助实施查询优化呢？</p>
+<p>（30）应用程序必须捕获SQL异常，并有相应处理</p>
+<p>总结：大数据量高并发的互联网业务，极大影响数据库性能的都不让用，不让用哟。</p>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : 王海 <br/>
+        
+        原文链接 : <a href="">https://blog.whai.me/2018/04/12/zhuan-58dao-jia-shu-ju-ku-30tiao-jun-gui-jie-du/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2018/03/29/ghost-wwiki-theme/" target="_self">使用 Ghost 搭建个人 Wiki</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2018/04/24/centos-1-install/" target="_self">CentOS实践（1）安装Linux系统</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz",
+      appKey: "WlHSVnCdyWtotqoPUPn1NQuQ",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz", "WlHSVnCdyWtotqoPUPn1NQuQ");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    我疯狂地挥舞着键盘，郑重地敲下了：<span class="my-face">Hello World</span>
+    <br>
+    Theme - <a href="#">BMW</a>  💗 Powered by <a href="https://www.whai.me">王海</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

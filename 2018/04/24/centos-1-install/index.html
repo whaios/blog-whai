@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>CentOS实践（1）安装Linux系统 | 王海的博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Notes,CentOS,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="我疯狂地挥舞着键盘，郑重地敲下了：Hello World。">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">王海的博客</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="https://www.whai.me">
+          
+            <a 
+              href="https://www.whai.me"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>CentOS实践（1）安装Linux系统</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2018-04-24
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Notes/">
+            Notes
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="centos-1-install"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="1-安装VM虚拟机-1"><a href="#1-安装VM虚拟机-1" class="headerlink" title="1. 安装VM虚拟机"></a>1. 安装VM虚拟机</h2><p>在学习环境中，我们通常在虚拟机上来安装我们的Linux操作系统。通过VMware WorkStation虚拟机能够在主机上同时安装运行多个不同的操作系统。</p>
+<ul>
+<li><strong>VMware Workstation Pro v14.0 下载：</strong><br><a href="https://download3.vmware.com/software/wkst/file/VMware-workstation-full-14.0.0-6661328.exe" target="_blank" rel="noopener">https://download3.vmware.com/software/wkst/file/VMware-workstation-full-14.0.0-6661328.exe</a></li>
+<li><strong>VMware Workstation Pro v14.0 密钥：</strong><br>使用下列密钥对该版本进行永久激活。<br><code>FF31K-AHZD1-H8ETZ-8WWEZ-WUUVA</code></li>
+</ul>
+<p>下载完成后，一路点击下一步，完成安装。</p>
+<h2 id="2-安装-CentOS"><a href="#2-安装-CentOS" class="headerlink" title="2. 安装 CentOS"></a>2. 安装 CentOS</h2><h3 id="2-1-下载安装包"><a href="#2-1-下载安装包" class="headerlink" title="2.1 下载安装包"></a>2.1 下载安装包</h3><p>CentOS 7.x 系列只有64位系统，没有32位。生产服务器建议安装CentOS-7-x86_64-Minimal-xx.iso版本（最小化安装）</p>
+<ul>
+<li><strong>CentOS 7.4 Minimal 下载：</strong><br><a href="http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1708.iso" target="_blank" rel="noopener">http://isoredirect.centos.org/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1708.iso</a></li>
+</ul>
+<h3 id="2-2-理解-Linux-分区概念"><a href="#2-2-理解-Linux-分区概念" class="headerlink" title="2.2 理解 Linux 分区概念"></a>2.2 理解 Linux 分区概念</h3><p>在安装 Linux 的过程中，必须要有的两个分区为 <code>/</code> 根分区 和 <code>swap</code> 分区。</p>
+<ul>
+<li><code>swap</code> 分区（交换分区）<br>这是一个特殊的分区，它的作用相当于Windows下的虚拟内存，这个分区的大小一般设置为物理内存的2倍，但是不管物理内存多大，交换分区建议不要超过8GB，因为大于8GB的交换分区其实并灭有多大实际意义。</li>
+<li><code>/boot</code> 分区<br>该分区用于放置Linux启动所用到的文件，如kernel和initrd文件。</li>
+</ul>
+<h3 id="2-3-开始安装"><a href="#2-3-开始安装" class="headerlink" title="2.3 开始安装"></a>2.3 开始安装</h3><h4 id="2-3-1-首先会看到启动界面"><a href="#2-3-1-首先会看到启动界面" class="headerlink" title="2.3.1 首先会看到启动界面"></a>2.3.1 首先会看到启动界面</h4><p><img src="http://img.whai.me/2018/04/centos-1-welcome.png-watermark" alt="centos-1-welcome"><br>键盘上下移动，选中 <code>Install CentOS 7</code> 选项，并回车。</p>
+<h4 id="2-3-2-选择安装过程中使用的语言"><a href="#2-3-2-选择安装过程中使用的语言" class="headerlink" title="2.3.2 选择安装过程中使用的语言"></a>2.3.2 选择安装过程中使用的语言</h4><p><img src="http://img.whai.me/2018/04/centos-1-language.png-watermark" alt="centos-1-language"><br>点击 <code>继续</code> 按钮。</p>
+<h4 id="2-3-3-自定义分区"><a href="#2-3-3-自定义分区" class="headerlink" title="2.3.3 自定义分区"></a>2.3.3 自定义分区</h4><p>点击 <code>安装位置</code> ，进入分区设置，选择 <code>我要配置分区</code>。<br><img src="http://img.whai.me/2018/04/centos-1-drive.png-watermark" alt="centos-1-drive"><br><img src="http://img.whai.me/2018/04/centos-1-drive-customer.png-watermark" alt="centos-1-drive-customer"></p>
+<p>点击 <code>完成</code> 按钮，进入手动分区界面<br><img src="http://img.whai.me/2018/04/centos-1-drive-customer-create.png-watermark" alt="centos-1-drive-customer-create"></p>
+<p><code>点这里自动创建他们</code> 为磁盘自动创建挂载点<br><img src="http://img.whai.me/2018/04/centos-1-drive-done.png-watermark" alt="centos-1-drive-done"></p>
+<p>此时系统自动为我们创建了 500MB 的 <code>/boot 分区</code>，2048MB 的 <code>swap</code> 分区，剩余空间全部分配给 <code>/</code> 根分区。</p>
+<p>点击 <code>完成</code> 按钮，并 <code>接受更改</code>，完成分区设置。</p>
+<h4 id="2-3-4-网卡配置"><a href="#2-3-4-网卡配置" class="headerlink" title="2.3.4 网卡配置"></a>2.3.4 网卡配置</h4><p>进入到 <code>NETWORK &amp; HOST NAME</code> 设置界面<br><img src="http://img.whai.me/2018/04/centos-1-network.png-watermark" alt="centos-1-network"><br>启用网络连接，默认使用DHCP自动获取IP地址<br><img src="http://img.whai.me/2018/04/centos-1-network-enable.png-watermark" alt="centos-1-network-enable"></p>
+<p>点击 <code>完成</code> 按钮</p>
+<h4 id="2-3-5-为-root-用户设置密码"><a href="#2-3-5-为-root-用户设置密码" class="headerlink" title="2.3.5 为 root 用户设置密码"></a>2.3.5 为 root 用户设置密码</h4><p>点击 <code>开始安装</code> 后，在安装过程中，可以为 root 用户设置密码<br><img src="http://img.whai.me/2018/04/centos-1-setpassword.png-watermark" alt="centos-1-setpassword"></p>
+<p>最后等待安装完成，提示 <code>重启</code> 电脑。</p>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : 王海 <br/>
+        
+        原文链接 : <a href="">https://blog.whai.me/2018/04/24/centos-1-install/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/CentOS/">
+              #CentOS
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2018/04/12/zhuan-58dao-jia-shu-ju-ku-30tiao-jun-gui-jie-du/" target="_self">58到家数据库30条军规解读</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2018/04/25/centos-2-login/" target="_self">CentOS实践（2）登录系统</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz",
+      appKey: "WlHSVnCdyWtotqoPUPn1NQuQ",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz", "WlHSVnCdyWtotqoPUPn1NQuQ");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    我疯狂地挥舞着键盘，郑重地敲下了：<span class="my-face">Hello World</span>
+    <br>
+    Theme - <a href="#">BMW</a>  💗 Powered by <a href="https://www.whai.me">王海</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

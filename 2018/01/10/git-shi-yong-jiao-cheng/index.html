@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>Git 使用教程 | 王海的博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Notes,Git,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="我疯狂地挥舞着键盘，郑重地敲下了：Hello World。">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">王海的博客</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="https://www.whai.me">
+          
+            <a 
+              href="https://www.whai.me"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>Git 使用教程</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2018-01-10
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Notes/">
+            Notes
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="git-shi-yong-jiao-cheng"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="一-Windows上安装Git"><a href="#一-Windows上安装Git" class="headerlink" title="一. Windows上安装Git"></a>一. Windows上安装Git</h2><p>访问官网<a href="https://git-scm.com/download/win" target="_blank" rel="noopener">https://git-scm.com/download/win</a>下载对应版本的安装包。<br>安装完成后，从 <code>开始菜单</code> —&gt; <code>Git</code> —&gt; <code>Git Bash</code>，打开命令行工具。<br>为了确认是否安装成功，我们执行 <code>version</code> 命令，如果正常显示Git的版本号就表示Git已经成功安装了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git --version</span><br></pre></td></tr></table></figure></p>
+<p><em>输出：git version 2.9.0.windows.1</em></p>
+<h2 id="二-创建远程代码库"><a href="#二-创建远程代码库" class="headerlink" title="二. 创建远程代码库"></a>二. 创建远程代码库</h2><p>推荐使用Github远程代码库，访问<a href="https://github.com/" target="_blank" rel="noopener">Github官网</a>，注册一个账号并登录，然后创建一个代码仓库。<br>Github针对免费用户只能创建公共的代码仓库，收费用户才能创建私有仓库。<br>当然也可以使用其他的远程代码库，比如微软的<a href="https://www.visualstudio.com/products/visual-studio-team-services-vs" target="_blank" rel="noopener">Visual Studio Team Services</a>，或者<a href="https://bitbucket.org/" target="_blank" rel="noopener">BitBucket</a>，还有国内的<a href="https://coding.net" target="_blank" rel="noopener">Coding</a>。</p>
+<h2 id="三-配置Git"><a href="#三-配置Git" class="headerlink" title="三. 配置Git"></a>三. 配置Git</h2><p>在使用Git之前，我们对Git做一个初始配置，我们需要设置用户名和电子邮箱。以便之后我们提交了代码后，Git能跟踪和标记是谁做了修改。<br>在命令行工具中，依次执行如下命令进行设置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;&lt;使用者名字&gt;&quot;</span><br><span class="line">git config --global user.email &quot;&lt;电子邮箱&gt;&quot;</span><br></pre></td></tr></table></figure></p>
+<p><em>注意：替换掉命令中的<code>&lt;使用者名字&gt;</code>和<code>&lt;电子邮箱&gt;</code>，注意保留命令中的双引号。强烈推荐您使用与远程代码库中相同的用户名和电子邮箱</em><br>配置完成后，我们也可以执行以下命令进行查看：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name</span><br><span class="line">git config --global user.email</span><br></pre></td></tr></table></figure></p>
+<p>Windows上的控制台遇到中文名称的时候会显示为类似”\346\226\260\350\246…”这样的字符，执行以下命令让它显示出正确的中文：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global core.quotepath off</span><br></pre></td></tr></table></figure></p>
+<h2 id="四-创建一个本地代码库"><a href="#四-创建一个本地代码库" class="headerlink" title="四. 创建一个本地代码库"></a>四. 创建一个本地代码库</h2><p>在Windows上，我们创建一个本地文件夹，比如<code>D:\GitHub\my_project</code>，将<code>my_project</code>文件夹作为本地代码库。<br>在命令行中执行以下命令，导航到<code>my_project</code>目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd D:\GitHub\my_project</span><br></pre></td></tr></table></figure></p>
+<p>再执行以下命令来初始化当前目录为本地Git代码库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure></p>
+<p>Git会在<code>my_project</code>文件夹内创建一个名为<code>.git</code>的隐藏文件夹，那就是你的本地代码库。<br><em>注意：之后对该本地仓库执行的所有命令都必须在<code>my_project</code>目录下</em></p>
+<h2 id="五-将修改的文件添加到缓存区"><a href="#五-将修改的文件添加到缓存区" class="headerlink" title="五. 将修改的文件添加到缓存区"></a>五. 将修改的文件添加到缓存区</h2><p>当我们新增或编辑了代码库<code>my_project</code>中的文件，我们需要将文件添加到缓存区。<br>在命令行中执行以下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br></pre></td></tr></table></figure></p>
+<p>最后的“.”符号的意思是仓库下的“所有文件、文件夹和子文件夹”。<br>假如我们只想要把特定文件添加到源代码控制中去，我们可以显示的指定它们，使用命令<code>git add &lt;filename&gt;</code>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add my_file, my_other_file</span><br></pre></td></tr></table></figure></p>
+<h2 id="六-提交文件改动"><a href="#六-提交文件改动" class="headerlink" title="六. 提交文件改动"></a>六. 提交文件改动</h2><p>使用如下命令，将改动提交到本地<code>HEAD</code>区，此时还并没有同步到远程代码库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;代码提交信息&quot;</span><br></pre></td></tr></table></figure></p>
+<p><em>输入提交信息时，如果需要输入中文，则使用 <code>-m</code> 参数</em><br><em>注意：提交我们的文件时，总是附带着有意义的注释，描述了它们现在的状态。</em></p>
+<p>现在我们随时都可以回滚到这个提交状态。如果你有需要检查你现在的已加载（staged）和未加载（unstaged）文件的状态、提交等，你可以询问git的状态：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure></p>
+<h2 id="七-回滚到之前的提交状态"><a href="#七-回滚到之前的提交状态" class="headerlink" title="七. 回滚到之前的提交状态"></a>七. 回滚到之前的提交状态</h2><p>在某些时候，你可能想要回到之前的代码版本。首先，你需要找到你想回到哪个版本。要看所有的提交记录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure></p>
+<p>这会输出你的提交的历史记录，像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">commit ca82a6dff817ec66f44342007202690a93763949Author: your_username your_email@domain.comDate:   Mon Nov 4 12:52:11 2013 -0700    changes the frontpage layout</span><br><span class="line">commit 085bb3bcb608e1e8451d4b2432f8ecbe6306e7e7Author: your_username your_email@domain.comDate:   Mon Nov 4 11:40:33 2013 -0700    adds my new feature</span><br><span class="line">commit a11bef06a3f659402fe7563abf99ad00de2209e6Author: your_username your_email@domain.comDate:   Mon Nov 4 10:37:28 2013 -0700    initial commit</span><br></pre></td></tr></table></figure></p>
+<p>如果你想回到“adds my new feature”这个提交，简单地用提交的ID做签出（checkout）（我通常只用到ID开头的9个字符）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout 085bb3bcb</span><br></pre></td></tr></table></figure></p>
+<p>你也可以签出到一个新的分支，像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b my_previous_version 085bb3bcb</span><br></pre></td></tr></table></figure></p>
+<h2 id="八-推送到远程代码库"><a href="#八-推送到远程代码库" class="headerlink" title="八. 推送到远程代码库"></a>八. 推送到远程代码库</h2><p>在第一次你想推送一个本地代码库到远程代码库时，你需要把它添加到你的项目配置里。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://your_username@github.com/your_username/name_of_remote_repository.git</span><br></pre></td></tr></table></figure></p>
+<p><em>注意：这里的“origin”只是一个习惯。它是你的远程代码库的别名，但是你可以用其他任何你喜欢的词。你甚至可以有多个远程代码库，你只需要给它们起不同的别名。</em><br>之后执行如下命令以将这些改动提交到远端仓库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin master</span><br></pre></td></tr></table></figure></p>
+<p>可以把<code>master</code>换成你想要推送的任何分支。<br><em>注意：此时可能会提示要求输入远程代码库的用户名和密码。</em></p>
+<h2 id="九-克隆远程代码库"><a href="#九-克隆远程代码库" class="headerlink" title="九. 克隆远程代码库"></a>九. 克隆远程代码库</h2><p>如果远程代码库中已经有一份代码，需要将代码拷贝到本地（例如，如果你在另一台机器上开始工作，这台机器上还没有用过这个项目）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://your_username@bitbucket.org/your_username/name_of_remote_repository.git</span><br></pre></td></tr></table></figure></p>
+<p>如果你已经在本地的项目上工作了，只是想从远程代码库上取得它最新的版本，移动到项目的根目录下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin master</span><br></pre></td></tr></table></figure></p>
+<h2 id="十-创建分支"><a href="#十-创建分支" class="headerlink" title="十. 创建分支"></a>十. 创建分支</h2><p>建立分支是你创建代码的独立版本的动作，独立于你的主干分支。默认地，每次你提交到Git的文件都会被储存到<code>master</code>（主干）分支。<br>比如说，我们想要向项目里添加一个新的功能，但是有可能最后会放弃这个功能，此时就想要能够回滚到添加新功能之前的版本。这就是你创建分支的时候了。<br>通过如下命令创建并同时切换到你新建的分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b new_feature</span><br></pre></td></tr></table></figure></p>
+<p>或者，可以先创建一个分支然后手动切换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git branch new_feature</span><br><span class="line">git checkout new_feature</span><br></pre></td></tr></table></figure></p>
+<p>查看项目下所有的分支<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure></p>
+<p><em>注意：你同时可以有多个分支，甚至可以从一个分支上再创建一个分支。</em></p>
+<h2 id="十一-合并分支"><a href="#十一-合并分支" class="headerlink" title="十一. 合并分支"></a>十一. 合并分支</h2><p>当你对你的新功能满意了的时候，你想要把它加到主干分支上。<br>首先将新功能分支上的修改进行提交：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &quot;adds my new feature&quot;</span><br></pre></td></tr></table></figure></p>
+<p>然后移到主干分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure></p>
+<p>通过如下命令进行合并：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge new_feature</span><br></pre></td></tr></table></figure></p>
+<p>此时，你的主干分支中就包含了新功能分支中的最新修改了。</p>
+<h2 id="十二-丢弃分支"><a href="#十二-丢弃分支" class="headerlink" title="十二. 丢弃分支"></a>十二. 丢弃分支</h2><p>相反，如果打算丢弃你在分支里做的修改，我们还是先将新功能分支中的修改进行提交：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &quot;feature to be discarded&quot;</span><br></pre></td></tr></table></figure></p>
+<p>然后，就可以不用理会这个新功能分支了，再切换到主干分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br></pre></td></tr></table></figure></p>
+<p>现在，你的代码处于你创建分支之前的状态了，因为主干分支中并没有包含新功能分支的任何修改。</p>
+<h2 id="十三-删除一个分支"><a href="#十三-删除一个分支" class="headerlink" title="十三. 删除一个分支"></a>十三. 删除一个分支</h2><p>在主干（master）分支上执行如下命令，删除新功能分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -d new_feature</span><br></pre></td></tr></table></figure></p>
+<p>假如新功能分支的修改已经合并到主分支了，它将会删除新功能分支。假如新功能分支没有合并，将会得到一个错误信息。<br>我们想要强制删除一个未合并的分支（通常你不想保留的修改），需要在上面的命令中附带一个大写D。意思是“强制删除分支，无论如何我不想要它了。”：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -D new_feature</span><br></pre></td></tr></table></figure></p>
+<h2 id="十四-查看状态"><a href="#十四-查看状态" class="headerlink" title="十四. 查看状态"></a>十四. 查看状态</h2><p>我们可以通过以下命令来查看Git状态：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure></p>
+<p>将会显示是否还有文件未提交。<br>我们也可以比较某个文件，查看该文件到底修改了什么内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff readme.txt</span><br></pre></td></tr></table></figure></p>
+<h2 id="十六-别名"><a href="#十六-别名" class="headerlink" title="十六. 别名"></a>十六. 别名</h2><p>Git允许你为你常用的命令创建快捷方式（别名）。例如，如果你不想每次都输入<code>git commit -m &quot;some comment&quot;</code>，而是输入<code>git c &quot;some comment&quot;</code>，你可以向你的git全局配置里添加一个别名来实现，像这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global alias.c &apos;commit -m&apos;</span><br></pre></td></tr></table></figure></p>
+<p>您也可以参考如下配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">git config --global alias.c &apos;commit -m&apos;</span><br><span class="line">git config --global alias.co &apos;checkout&apos;</span><br><span class="line">git config --global alias.cob &apos;checkout -b&apos;</span><br><span class="line">git config --global alias.br &apos;branch&apos;</span><br><span class="line">git config --global alias.m &apos;merge&apos;</span><br><span class="line">git config --global alias.a &apos;add .&apos;</span><br><span class="line">git config --global alias.s &apos;status&apos;</span><br><span class="line">git config --global alias.dbr &apos;branch -d&apos;</span><br></pre></td></tr></table></figure></p>
+<h2 id="十七-常见问题"><a href="#十七-常见问题" class="headerlink" title="十七. 常见问题"></a>十七. 常见问题</h2><h3 id="error-failed-to-push-some-refs-to"><a href="#error-failed-to-push-some-refs-to" class="headerlink" title="error: failed to push some refs to"></a>error: failed to push some refs to</h3><p>当要push代码到git时，出现提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> ! [rejected]        master -&gt; master (fetch first)</span><br><span class="line">error: failed to push some refs to &apos;_git&apos;</span><br><span class="line">hint: Updates were rejected because the remote contains work that you do</span><br><span class="line">hint: not have locally. This is usually caused by another repository pushing</span><br><span class="line">hint: to the same ref. You may want to first integrate the remote changes</span><br><span class="line">hint: (e.g., &apos;git pull ...&apos;) before pushing again.</span><br><span class="line">hint: See the &apos;Note about fast-forwards&apos; in &apos;git push --help&apos; for details.</span><br></pre></td></tr></table></figure></p>
+<p>原因在于：git仓库中已经有一部分代码，所以它不允许你直接把你的代码覆盖上去。<br>有2个选择方式：</p>
+<ul>
+<li>1.强推，即利用强覆盖方式用你本地的代码替代git仓库内的内容</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -f</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2.先把git的东西fetch到你本地然后merge后再push</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br><span class="line">git merge</span><br></pre></td></tr></table></figure>
+<p>这2句命令等价于<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure></p>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : 王海 <br/>
+        
+        原文链接 : <a href="">https://blog.whai.me/2018/01/10/git-shi-yong-jiao-cheng/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/Git/">
+              #Git
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2018/01/25/install-ghost/" target="_self">部署Ghost1.20+博客</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz",
+      appKey: "WlHSVnCdyWtotqoPUPn1NQuQ",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz", "WlHSVnCdyWtotqoPUPn1NQuQ");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    我疯狂地挥舞着键盘，郑重地敲下了：<span class="my-face">Hello World</span>
+    <br>
+    Theme - <a href="#">BMW</a>  💗 Powered by <a href="https://www.whai.me">王海</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

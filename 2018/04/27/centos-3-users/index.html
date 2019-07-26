@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>CentOS实践（3）用户管理 | 王海的博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Notes,CentOS,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="我疯狂地挥舞着键盘，郑重地敲下了：Hello World。">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">王海的博客</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="https://www.whai.me">
+          
+            <a 
+              href="https://www.whai.me"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>CentOS实践（3）用户管理</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2018-04-27
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Notes/">
+            Notes
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="centos-3-users"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="1-用户和用户组-1"><a href="#1-用户和用户组-1" class="headerlink" title="1. 用户和用户组"></a>1. 用户和用户组</h2><p>Linux系统中每个用户都有一个唯一标识（32位整数），即User ID，简称UID。用户分为3类，即普通用户、根用户、系统用户。</p>
+<ul>
+<li>普通用户<br>指所有使用Linux系统的真实用户，这类用户可以使用用户名和密码登录系统。通常普通用户的UID从500开始。</li>
+<li>根用户<br>即root用户，它的UID为0，是系统中的超级用户，拥有对系统的完全控制权。</li>
+<li>系统用户<br>指系统运行时必须有的用户，但并不是真实的使用者。比如说运行MySQL数据库服务时，需要使用系统用户mysql来运行mysqld进程。UID范围是1~499。</li>
+</ul>
+<p>每个用户组也有唯一标识Group ID，简称GID。</p>
+<p>我们可以通过 <code>id</code> 命令来查看自己的UID和GID：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# id</span><br><span class="line">uid=0(root) gid=0(root) 组=0(root) 环境=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023</span><br></pre></td></tr></table></figure></p>
+<p>也可以查看自己所属的用户组：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# groups</span><br><span class="line">root</span><br></pre></td></tr></table></figure></p>
+<p>查询当前有哪些用户正在登录到系统中，使用 <code>who</code> 命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# who</span><br><span class="line">root     pts/0        2018-04-26 13:36 (192.168.27.1)</span><br></pre></td></tr></table></figure></p>
+<h2 id="2-账号管理"><a href="#2-账号管理" class="headerlink" title="2. 账号管理"></a>2. 账号管理</h2><h3 id="2-1-useradd-新增用户"><a href="#2-1-useradd-新增用户" class="headerlink" title="2.1 useradd 新增用户"></a>2.1 useradd 新增用户</h3><p>添加一个新用户，用户名为 <code>whai</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# useradd whai</span><br></pre></td></tr></table></figure></p>
+<p>创建一个新用户，系统会为该用户分配一个UID，并创建一个该用户的home目录 <code>/home/whai</code>。同时还会新建一个与用户名一样的用户组。</p>
+<h3 id="2-2-passwd-修改密码"><a href="#2-2-passwd-修改密码" class="headerlink" title="2.2 passwd 修改密码"></a>2.2 passwd 修改密码</h3><p>创建一个新用户后，该用户是不能登录系统的，因为还没有设置用户的登录密码。使用 <code>passwd</code> 命令后跟用户名，然后回车，将会提示输入新密码和确认密码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# passwd whai</span><br><span class="line">更改用户 whai 的密码 。</span><br><span class="line">新的 密码：</span><br><span class="line">无效的密码： 密码少于 8 个字符</span><br><span class="line">重新输入新的 密码：</span><br><span class="line">passwd：所有的身份验证令牌已经成功更新。</span><br></pre></td></tr></table></figure></p>
+<p><em>注意：输入密码的时候，都是看不到密码字符的</em></p>
+<p>如果输入的密码太简单，系统则会提示 <code>无效的密码</code>，但是我们依然可以继续设置这个密码，因为我们用的是 root 超级管理员用户。</p>
+<p>普通用户可以用过 <code>passwd</code> 命令来修改自己的密码（命令后面不需要也不能跟用户名），首先需要输入旧密码进行验证，然后才可以设置新的密码。如果设置的新密码太简单，系统会拒绝设置为简单的密码。</p>
+<h3 id="2-3-usermod-修改用户"><a href="#2-3-usermod-修改用户" class="headerlink" title="2.3 usermod 修改用户"></a>2.3 usermod 修改用户</h3><p>可以使用下面的命令，为用户指定一个新的home目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# usermod -d /home/whai_new -m whai</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><code>-d</code> 参数就是修改用户的home目录</li>
+<li><code>-m</code> 参数是如果新目录不存在，则自动创建该目录</li>
+</ul>
+<p>使用 <code>-L</code> 参数可以冻结对应的账号，使该账号无法使用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# usermod -L whai</span><br></pre></td></tr></table></figure></p>
+<p>如果需要解锁账户，则使用 <code>-U</code> 参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# usermod -U whai</span><br></pre></td></tr></table></figure></p>
+<p><em>其实 usermod 命令就是对 /etc/passwd 和 /etc/shadow 文件做修改，我们也可以手动修改这两个文件达到同样的效果</em></p>
+<h3 id="2-4-userdel-删除用户"><a href="#2-4-userdel-删除用户" class="headerlink" title="2.4 userdel 删除用户"></a>2.4 userdel 删除用户</h3><p>使用该命令可删除指定的用户，默认情况下，删除用户时不会删除用户的home目录和邮件信息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# userdel whai</span><br></pre></td></tr></table></figure></p>
+<p>如果需要删除与该用户相关的所有文件，则可以跟上 <code>-r</code> 参数。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# userdel -r whai</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-5-groupadd-新增用户组"><a href="#2-5-groupadd-新增用户组" class="headerlink" title="2.5 groupadd 新增用户组"></a>2.5 groupadd 新增用户组</h3><p>通过该命令可以手动创建用户组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# groupadd group1</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-6-groupdel-删除用户组"><a href="#2-6-groupdel-删除用户组" class="headerlink" title="2.6 groupdel 删除用户组"></a>2.6 groupdel 删除用户组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# groupdel group1</span><br></pre></td></tr></table></figure>
+<p><strong>如果有用户属于这个组，使用该命令则无法删除该组</strong></p>
+<h3 id="2-7-users、who、w-查看当前登录用户"><a href="#2-7-users、who、w-查看当前登录用户" class="headerlink" title="2.7 users、who、w 查看当前登录用户"></a>2.7 users、who、w 查看当前登录用户</h3><p>使用 <code>users</code> 命令可以简单查看当前登录系统的用户：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# users</span><br><span class="line">root</span><br></pre></td></tr></table></figure></p>
+<p><em>如果用一个用户通过两个不同的终端登录，则会显示为两个用户。</em></p>
+<p>使用 <code>who</code> 命令可以查看到详细一些的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# who</span><br><span class="line">root     pts/0        2018-04-27 12:27 (192.168.27.1)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>root 用户名</li>
+<li>pts/0 登录的终端</li>
+<li>2018-04-27 12:27 (192.168.27.1) 用户的登录时间和IP地址</li>
+</ul>
+<p>使用 <code>w</code> 命令则可以查看到更详细的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> 14:11:52 up  1:44,  1 user,  load average: 0.00, 0.01, 0.05</span><br><span class="line">USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT</span><br><span class="line">root     pts/0    192.168.27.1     12:27    0.00s  0.08s  0.00s w</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>第一行显示当前时间、系统运行时间、已登录的用户数量和系统负载</li>
+<li>USER 用户名</li>
+<li>TTY 用户登录终端</li>
+<li>FROM 登录的主机名和IP地址</li>
+<li>LOGIN@ 用户登录时间</li>
+<li>IDLE 用户闲置时间</li>
+<li>JCPU 与终端相关的当前所有运行进程消耗的CPU时间总量</li>
+<li>PCPU 当前WHAT列所对应的进程消耗的CPU时间总量</li>
+<li>WHAT 用户当前运行的进程</li>
+</ul>
+<h2 id="3-切换用户"><a href="#3-切换用户" class="headerlink" title="3. 切换用户"></a>3. 切换用户</h2><p>在使用Linux系统过程中，通常使用的是普通用户，但是在操作过程中常常遇到权限原因必须使用root用户来执行一些命令，这时就需要临时切换成root用户，操作完成后再切换回普通用户。</p>
+<h3 id="3-1-su-切换用户"><a href="#3-1-su-切换用户" class="headerlink" title="3.1 su 切换用户"></a>3.1 su 切换用户</h3><p><code>su</code> 命令默认表示切换到root用户，然后输入root账户的密码就切换成功。完成操作后，使用 <code>exit</code> 命令就退出了root用户，并切换回原先的用户了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[whai@localhost ~]$ su</span><br><span class="line">密码：</span><br><span class="line">[root@localhost whai]#</span><br><span class="line"></span><br><span class="line">... 使用root用户进行操作 ...</span><br><span class="line"></span><br><span class="line">[root@localhost whai]# exit</span><br><span class="line">exit</span><br><span class="line">[whai@localhost ~]$</span><br></pre></td></tr></table></figure></p>
+<p><em>su 命令后可跟用户名，即切换到指定的用户，同样需要输入用户对应的密码。</em><br><strong>root用户可以使用su命令切换成任意用户而不需要输入密码</strong></p>
+<p><code>su</code> 命令后还可跟上 <code>-</code> 参数，切换成用户后便会自动切换到该用户的用户环境（就是用户的home目录、使用的Shell，以及个性化设置等）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[whai@localhost ~]$ su -</span><br><span class="line">密码：</span><br><span class="line">上一次登录：五 4月 27 14:29:31 CST 2018pts/0 上</span><br><span class="line">[root@localhost ~]#</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-2-sudo-使用其他用户身份执行命令"><a href="#3-2-sudo-使用其他用户身份执行命令" class="headerlink" title="3.2 sudo 使用其他用户身份执行命令"></a>3.2 sudo 使用其他用户身份执行命令</h3><p>当我们使用普通用户时，希望以root用户执行某个命令，比如需要创建一个用户 user1。我们不需要切换到root用户，而使用 <code>sudo</code> 命令后直接跟上需要执行的命令，按照提示输入用户自己的密码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[whai@localhost ~]$ sudo useradd user1</span><br><span class="line">[sudo] password for whai:</span><br></pre></td></tr></table></figure></p>
+<p>前提是我们必须赋予某个用户执行sudo的权限，否则会遇到如下错误提示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">whai 不在 sudoers 文件中。此事将被报告。</span><br></pre></td></tr></table></figure></p>
+<p>我们需要修改 <code>/etc/sudoers</code> 配置文件来授予用户对sudo的执行权限。可以直接使用 <code>visudo</code> 命令来编辑配置文件，通过这种方式在编辑后保存时会自动检查语法设置，防止配置错误而造成无法使用sudo命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# visudo</span><br><span class="line"></span><br><span class="line">## Sudoers allows particular users to run various commands as</span><br><span class="line">## the root user, without needing the root password.</span><br><span class="line">## of related commands, which can then be delegated out to particular</span><br><span class="line">## users or groups.</span><br><span class="line">##</span><br><span class="line">## This file must be edited with the &apos;visudo&apos; command.</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">## Allow root to run any commands anywhere</span><br><span class="line">whai    ALL=(ALL)       NOPASSWD:ALL</span><br></pre></td></tr></table></figure></p>
+<p>上面添加的这一行如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">whai    ALL=(ALL)       NOPASSWD:ALL</span><br><span class="line">``` </span><br><span class="line">表示</span><br></pre></td></tr></table></figure></p>
+<p>用户whai 可以在任何地方登录 =(执行任何人) 的任何命令，并不需要输入密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">最后一个参数设置为ALL是很不安全的，意味着该用户实际上拥有了全部的系统权限，在实际工作中可以根据用户的具体工作内容定义具体的命令列表。比如用户只需要执行重启和关机命令：</span><br></pre></td></tr></table></figure></p>
+<p>whai    ALL=(ALL)       NOPASSWD:/sbin/shutdown, /usr/bin/reboot<br><code>`</code></p>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : 王海 <br/>
+        
+        原文链接 : <a href="">https://blog.whai.me/2018/04/27/centos-3-users/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/CentOS/">
+              #CentOS
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2018/04/25/centos-2-login/" target="_self">CentOS实践（2）登录系统</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2018/05/21/letsencrypt-https/" target="_self">申请 Let’s Encrypt 通配符 HTTPS 证书</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz",
+      appKey: "WlHSVnCdyWtotqoPUPn1NQuQ",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz", "WlHSVnCdyWtotqoPUPn1NQuQ");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    我疯狂地挥舞着键盘，郑重地敲下了：<span class="my-face">Hello World</span>
+    <br>
+    Theme - <a href="#">BMW</a>  💗 Powered by <a href="https://www.whai.me">王海</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

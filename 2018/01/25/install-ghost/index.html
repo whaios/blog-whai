@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>部署Ghost1.20+博客 | 王海的博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Notes,Ghost,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="我疯狂地挥舞着键盘，郑重地敲下了：Hello World。">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">王海的博客</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="https://www.whai.me">
+          
+            <a 
+              href="https://www.whai.me"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>部署Ghost1.20+博客</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2018-01-25
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Notes/">
+            Notes
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="install-ghost"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <p>Ghost 是一个完全开源的平台，它能帮助你快速建立并运行一个现代化的在线写作平台。它驱动着博客、杂志以及像 Zappos 和 Sky News 等新闻媒体。</p>
+<h2 id="Ghost-CLI"><a href="#Ghost-CLI" class="headerlink" title="Ghost CLI"></a>Ghost CLI</h2><p>使用Ghost1.0+的版本，推荐使用Ghost CLI工具进行部署。通过该工具，可以很方便的安装，设置和配置Ghost。</p>
+<h2 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h2><ul>
+<li>Ubuntu 16.04 操作系统的服务器（官方推荐）</li>
+<li>MySQL 数据库</li>
+<li>NGINX</li>
+<li>Systemd</li>
+<li>Node（versions 8.9+, 6.9+ and 4.5+）</li>
+<li><strong>请将你的域名解析到你的服务器上</strong></li>
+</ul>
+<h2 id="安装Ghost-CLI"><a href="#安装Ghost-CLI" class="headerlink" title="安装Ghost CLI"></a>安装Ghost CLI</h2><ol>
+<li><p>更新系统包列表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo apt-get update</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>升级系统安装的包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装Nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开HTTP / HTTPS的防火墙<br>如果系统开启了防火墙ufw，配置防火墙允许HTTP和HTTPS连接</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo ufw allow &apos;Nginx Full&apos;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装MySQL<br>在安装MySql的时候，会提示创建数据库root账户对应的密码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo apt-get install mysql-server</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>利用包管理器安装 Node.js<br>用curl获取源代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash  </span><br><span class="line"># sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改npm使用国内taobao镜像 (解决国内访问有些包超慢的问题，如果本身服务器在国外，则可以跳过这步)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># sudo npm install -g npm --registry=http://registry.npm.taobao.org</span><br><span class="line"># sudo npm init -f</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装Ghost-CLI</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo npm i -g ghost-cli</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><em>使用 <code>ghost-cli@latest</code> 可以保证安装最新的版本</em></p>
+<ol start="9">
+<li><p>安装完成，检查是否安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ghost help</span><br></pre></td></tr></table></figure>
+<p>如果能正常输出，则大功告成。</p>
+</li>
+</ol>
+<h2 id="安装Ghost博客"><a href="#安装Ghost博客" class="headerlink" title="安装Ghost博客"></a>安装Ghost博客</h2><ol>
+<li><p>新建一个文件夹，用来存放我们的博客程序（保证该文件夹是空的）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># sudo mkdir -p /var/www/whaiblog</span><br><span class="line"># cd /var/www/whaiblog</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装博客</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ghost install</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置博客<br>根据提示对博客进行设置</p>
+<ul>
+<li><strong>Enter your blog Url:</strong><br>设置博客的域名（http或者https），如：<a href="https://www.whai.me" target="_blank" rel="noopener">https://www.whai.me</a></li>
+<li><strong>Enter your MySQL hostname:</strong><br>MySQL数据库服务器地址，默认使用localhost</li>
+<li><strong>Enter your MySQL username:</strong><br>输入MySQL用户名，默认是root</li>
+<li><strong>Enter your MySQL password:</strong><br>输入MySQL的密码</li>
+<li><strong>Ghost database name:</strong><br>Ghost用来存储博客数据的数据库名称</li>
+<li><strong>Do you wish to set up a ghost MySQL user?</strong><br>问我们是否同意创建一个名为ghost的数据库用户，只操作ghost博客数据库，输入Y回车</li>
+<li><strong>Do you wish to set up nginx?</strong><br>为博客添加NGINX配置，直接输入Y回车</li>
+<li><strong>Do you wish to set up ssl?</strong><br>你的网站是否需要支持https？</li>
+<li><strong>Do you wish to set up systemd?</strong><br>为博客添加守护进程配置，直接输入Y回车</li>
+</ul>
+</li>
+<li><p>安装完成<br>当出现如下信息，则表示博客已经安装完成，并运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">✔ Starting Ghost</span><br><span class="line">You can access your blog at https://www.whai.me/</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>你便可以在浏览器中访问你的博客了。<br><em>如果还无法访问，可使用 <code>ghost restart</code> 重启博客</em></p>
+<h2 id="升级与维护"><a href="#升级与维护" class="headerlink" title="升级与维护"></a>升级与维护</h2><ol>
+<li><p>升级Ghost-CLI</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sudo npm i -g ghost-cli@latest</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用Ghost-CLI升级Ghost<br>进入博客程序所在文件夹，然后升级Ghost程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># cd /var/www/whaiblog</span><br><span class="line"># ghost update</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ul>
+<li>启动博客程序<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ghost start</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><em>如果运行 <code>ghost start</code> 失败，可以使用 <code>ghost run</code> 来进行调试，查看错误</em></p>
+<ul>
+<li><p>停止博客程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ghost stop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启博客程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ghost restart</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>卸载博客程序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ghost uninstall</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><em>该命令将删除博客程序，和相关的配置信息，Mysql中的数据不会被删除</em></p>
+<h2 id="Ghost-多用户"><a href="#Ghost-多用户" class="headerlink" title="Ghost 多用户"></a>Ghost 多用户</h2><p>Ghost 默认设置了 4 种主要角色，包括：博客所有者（owner）、管理员（administrator）、编辑（editor）和作者（author）。每种角色的设置都具有不同的目的，但是，一个博客只能有一个所有者（owner），其他角色都可以有多个。</p>
+<ul>
+<li><p>博客所有者（owner）<br>博客被初始创建的时候会强制设置一个用户，这个用户就是博客所有者。博客所有者具有最高权限，可以对 Ghost 系统实施任何修改。博客所有者是不能被删除的，但是可以将这一角色转移到其他用户身上。</p>
+</li>
+<li><p>管理员（administrator）<br>管理员具有与博客所有者完全相同的权限。唯一的不同是：管理员可以被降级为其他角色或者被删除。</p>
+</li>
+<li><p>编辑（editor）<br>编辑可以访问系统内的所有内容，也可以邀请新作者加入。</p>
+</li>
+<li><p>作者（author）<br>作者只能访问博客上的内容。他们可以创建新文章、修改现有文章，但是不能对 Ghost 系统做任何设置，也不能对系统用户做任何修改。也就是说，作者只能对内容做操作，没有其他任何权限。</p>
+</li>
+</ul>
+<h2 id="相关文章"><a href="#相关文章" class="headerlink" title="相关文章"></a>相关文章</h2><ul>
+<li><a href="/ghost-advanced-settings/">Ghost 高级设置</a></li>
+<li><a href="/ghost-themes/">Ghost 更多主题</a></li>
+</ul>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : 王海 <br/>
+        
+        原文链接 : <a href="">https://blog.whai.me/2018/01/25/install-ghost/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/Ghost/">
+              #Ghost
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2018/01/10/git-shi-yong-jiao-cheng/" target="_self">Git 使用教程</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2018/01/28/nginx-301-302/" target="_self">Nginx 下配置 301/302 重定向</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz",
+      appKey: "WlHSVnCdyWtotqoPUPn1NQuQ",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz", "WlHSVnCdyWtotqoPUPn1NQuQ");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    我疯狂地挥舞着键盘，郑重地敲下了：<span class="my-face">Hello World</span>
+    <br>
+    Theme - <a href="#">BMW</a>  💗 Powered by <a href="https://www.whai.me">王海</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

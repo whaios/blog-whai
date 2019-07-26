@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com">
+  
+  
+  
+  <title>Ghost 主题收录 | 王海的博客</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Notes,Ghost,">
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="我疯狂地挥舞着键盘，郑重地敲下了：Hello World。">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">王海的博客</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="https://www.whai.me">
+          
+            <a 
+              href="https://www.whai.me"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          
+            <a 
+              href="/about/"
+              target="_self"
+            >
+              关于
+            </a>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>Ghost 主题收录</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2018-02-11
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Notes/">
+            Notes
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="ghost-themes"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h2 id="wwiki-1"><a href="#wwiki-1" class="headerlink" title="wwiki"></a>wwiki</h2><p>用于搭建个人 Wiki 的 Ghost 主题，由博主自己制作。<br><a href="https://github.com/whaios/wwiki" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/whaios/wwiki/master/assets/gitbook/gitbook.png" alt="wwiki theme for Ghost"></p>
+<h2 id="uno-zen"><a href="#uno-zen" class="headerlink" title="uno-zen"></a>uno-zen</h2><p>Minimalist and Elegant theme for Ghost.<br><a href="https://github.com/Kikobeats/uno-zen" target="_blank" rel="noopener">项目地址</a> <a href="https://kikobeats.com" target="_blank" rel="noopener">演示地址</a><br><img src="https://camo.githubusercontent.com/1c8bb5db1fa3c43cce233d241907159d51e7fda8/687474703a2f2f692e696d6775722e636f6d2f4c4353423443612e6a7067" alt="Uno Zen for Ghost"></p>
+<h2 id="crisp"><a href="#crisp" class="headerlink" title="crisp"></a>crisp</h2><p>A minimalist, responsive, and open-source theme for Ghost by Kathy Qian. Last tested with Ghost v0.11.4.<br><a href="https://github.com/kathyqian/crisp" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/94a233fe81280a60769673ff732a664c1e66eeba/68747470733a2f2f7261772e6769746875622e636f6d2f6b617468797169616e2f63726973702d67686f73742d7468656d652f6d61737465722f73637265656e73686f74732f6c6973742e706e67" alt="Crisp"></p>
+<h2 id="Phantom"><a href="#Phantom" class="headerlink" title="Phantom"></a>Phantom</h2><p>A minimalistic theme for Ghost inspired by the Designmodo Journal.<br><a href="https://github.com/nitinthewiz/ghost-phantom" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/nitinthewiz/ghost-phantom/phantom/assets/images/mockup.jpg" alt="Phantom"></p>
+<h2 id="Attila"><a href="#Attila" class="headerlink" title="Attila"></a>Attila</h2><p>A content focused responsive theme for Ghost.<br><a href="https://github.com/zutrinken/attila" target="_blank" rel="noopener">项目地址</a> <a href="https://attila.zutrinken.com/" target="_blank" rel="noopener">演示地址</a><br><img src="https://raw.githubusercontent.com/zutrinken/attila/master/src/screenshot-desktop.jpg" alt="Attila"></p>
+<h2 id="Bleak"><a href="#Bleak" class="headerlink" title="Bleak"></a>Bleak</h2><p>An elegant AJAX driven theme for Ghost by Peter Amende.<br><a href="https://github.com/zutrinken/bleak" target="_blank" rel="noopener">项目地址</a> <a href="https://bleak.zutrinken.com/" target="_blank" rel="noopener">演示地址</a><br><img src="https://raw.githubusercontent.com/zutrinken/bleak/master/src/screenshot-desktop.jpg" alt="Bleak"></p>
+<h2 id="ghost-wbkd"><a href="#ghost-wbkd" class="headerlink" title="ghost-wbkd"></a>ghost-wbkd</h2><p>A ghost/journey theme.<br><a href="https://github.com/wbkd/ghost-wbkd" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/wbkd/ghost-wbkd/master/screenshot.jpg" alt="ghost-wbkd"></p>
+<h2 id="Kaldorei"><a href="#Kaldorei" class="headerlink" title="Kaldorei"></a>Kaldorei</h2><p>A Simple And Elegant Ghost Theme Derive From Default Theme Casper<br><a href="https://github.com/xiaoluoboding/ghost-theme-kaldorei" target="_blank" rel="noopener">项目地址</a> <a href="http://xlbd.me/" target="_blank" rel="noopener">演示地址</a><br><img src="https://raw.githubusercontent.com/xiaoluoboding/ghost-theme-kaldorei/master/assets/img/preview.png" alt="Kaldorei"></p>
+<h2 id="Steam"><a href="#Steam" class="headerlink" title="Steam"></a>Steam</h2><p>A clean and minimal theme for Ghost.<br><a href="https://github.com/epistrephein/Steam" target="_blank" rel="noopener">项目地址</a> <a href="https://dev.epistrephe.in/steam/" target="_blank" rel="noopener">演示地址</a><br><img src="https://raw.githubusercontent.com/epistrephein/Steam/master/assets/screenshots/showcase-responsive.jpg" alt="Steam"></p>
+<h2 id="Willow"><a href="#Willow" class="headerlink" title="Willow"></a>Willow</h2><p>Personal, responsive, minimalist and open-source theme for Ghost blogging platform.<br><a href="https://github.com/raivis-vitols/ghost-theme-willow" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/b0e76439d9f2a659b638b1ad9bb37860bc224dd5/687474703a2f2f692e696d6775722e636f6d2f613857666b6f532e706e67" alt="Willow Ghost Theme 4.1"></p>
+<h2 id="Mapache"><a href="#Mapache" class="headerlink" title="Mapache"></a>Mapache</h2><p>Mapache theme for ghost<br><a href="https://github.com/godofredoninja/Mapache" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/godofredoninja/Mapache/master/documentation/mapache-screenshot.png" alt="Mapache for Ghost"></p>
+<h2 id="CoderGhostTheme"><a href="#CoderGhostTheme" class="headerlink" title="CoderGhostTheme"></a>CoderGhostTheme</h2><p>Coder Ghost Theme for Showcasing Projects<br><a href="https://github.com/mbejda/CoderGhostTheme" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/c7d5370fa9e734eed15dc017a2d710bda4a3554b/68747470733a2f2f7777772e6d62656a64612e636f6d2f636f6e74656e742f696d616765732f323031352f31322f646f776e6c6f61642d2d322d2e706e6723343030" alt="Coder Ghost Theme for Showcasing Projects"></p>
+<h2 id="Ghostwriter"><a href="#Ghostwriter" class="headerlink" title="Ghostwriter"></a>Ghostwriter</h2><p>A simple AJAX driven Ghost theme.<br><a href="https://github.com/roryg/ghostwriter" target="_blank" rel="noopener">项目地址</a> <a href="http://ghost.jollygoodthemes.com/ghostwriter/" target="_blank" rel="noopener">演示地址</a><br><img src="https://raw.githubusercontent.com/roryg/ghostwriter/master/screenshot.png" alt="Ghostwriter"></p>
+<h2 id="ghost-caspro"><a href="#ghost-caspro" class="headerlink" title="ghost-caspro"></a>ghost-caspro</h2><p>ghost博客系统caspro主题，响应式，自适应，简洁<br><a href="https://github.com/wenkeShi/ghost-caspro" target="_blank" rel="noopener">项目地址</a> <a href="http://xinwenke.top/" target="_blank" rel="noopener">演示地址</a><br><img src="https://camo.githubusercontent.com/9c78a2ba5620d7b61b600c3fc249d3c596b3fcd9/687474703a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f373233343130392d363262666539653034376462643730332e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430" alt="首页"><br><img src="https://camo.githubusercontent.com/8f840cca495c05de6b88a5d5edb2e2308a767292/687474703a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f373233343130392d326136316434303537633936636164652e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430" alt="文章page"></p>
+<h2 id="Ghostium"><a href="#Ghostium" class="headerlink" title="Ghostium"></a>Ghostium</h2><p>A Ghost theme focused on content based on Medium design/ux.<br><a href="https://github.com/oswaldoacauan/ghostium" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/a417b96865cc63d7984f9af2f5858a1b7f24b630/687474703a2f2f692e696d6775722e636f6d2f6d35566354426c2e706e67" alt="Ghostium"></p>
+<h2 id="Oscar-for-Ghost"><a href="#Oscar-for-Ghost" class="headerlink" title="Oscar for Ghost"></a>Oscar for Ghost</h2><p>Simplistic, Clean, Content Focus Single Author Theme<br><a href="https://github.com/oscarmorrison/oscar-ghost" target="_blank" rel="noopener">项目地址</a> <a href="http://blog.oscarmorrison.com/" target="_blank" rel="noopener">演示地址</a><br><img src="https://camo.githubusercontent.com/f3867b693b4cc415a57a56152195b7b219d388c4/687474703a2f2f626c6f676f736361726d6f727269736f6e2e73332e616d617a6f6e6177732e636f6d2f323031362f4465632f67686f737473637265656e636173742e676966" alt="Oscar"></p>
+<h2 id="Mnml"><a href="#Mnml" class="headerlink" title="Mnml"></a>Mnml</h2><p>A minimal, responsive, fast ghost blog theme with great typography. Comes with Disqus comments, syntax highlighting, and KaTeX for mathematics, and more.<br><a href="https://github.com/curiositry/mnml-ghost-theme" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/3cf614374ce7ed5dbf39cd6997d32b5452f221dd/687474703a2f2f63646e2e6175746f646964616374732e696f2f696d672f6d6e6d6c2f6d6e6d6c2d76332e352e302e706e67" alt="a Typographically Tasteful Ghost Blog Theme"></p>
+<h2 id="decent"><a href="#decent" class="headerlink" title="decent"></a>decent</h2><p>A Ghost blog theme, modified from Casper. The main design is inspired by Aquila.<br><a href="https://github.com/serenader2014/decent" target="_blank" rel="noopener">项目地址</a> <a href="https://blog.serenader.me/" target="_blank" rel="noopener">演示地址</a><br><img src="https://raw.githubusercontent.com/serenader2014/decent/master/screenshot/homepage.jpg" alt="decent"></p>
+<h2 id="Text-for-Ghost"><a href="#Text-for-Ghost" class="headerlink" title="Text for Ghost"></a>Text for Ghost</h2><p>An elegant ghost blogging themes. Mandarin article optimization support.<br><a href="https://github.com/imgarylai/text" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/imgarylai/text/master/blog.gary-lai.com-1366x768.png" alt="Text for Ghost"></p>
+<h2 id="Material-design-lite-Ghost-blog-theme"><a href="#Material-design-lite-Ghost-blog-theme" class="headerlink" title="Material design lite Ghost blog theme"></a>Material design lite Ghost blog theme</h2><p>A material design lite Ghost blog theme<br><a href="https://github.com/sendya/material-design-lite-for-ghost" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/1c7ee1135c86edbf8a62781f89650209bb664664/68747470733a2f2f7374617469632d322e6c6f6163672e636f6d2f6f70656e2f7374617469632f67686f73742f696d616765732f73703136313032345f3133343130392e706e67" alt="Material design lite Ghost blog theme"></p>
+<h2 id="Caffeine-Theme"><a href="#Caffeine-Theme" class="headerlink" title="Caffeine Theme"></a>Caffeine Theme</h2><p>A minimalist, Material Design inspired Ghost Theme for optimal desktop and mobile experiences<br><a href="https://github.com/kelyvin/caffeine-theme" target="_blank" rel="noopener">项目地址</a> <a href="https://www.caffeinecoding.com/#" target="_blank" rel="noopener">演示地址</a><br><img src="https://camo.githubusercontent.com/fd1fe14c8e6f001ee6857560c064ac5c13764df3/687474703a2f2f692e696d6775722e636f6d2f4e697567436d4c2e706e67" alt="Caffeine Theme"></p>
+<h2 id="Daring"><a href="#Daring" class="headerlink" title="Daring"></a>Daring</h2><p>A minimal theme for Ghost.<br><a href="https://github.com/matthewl/Daring" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/1867ffcaea62877fcf4e0c3d2d534fd8d8b75cb4/68747470733a2f2f73332d65752d776573742d312e616d617a6f6e6177732e636f6d2f73332e6d6174746865776c616e672e6e65742f6173736574732f646172696e672d73637265656e73686f742e706e67" alt="Daring"></p>
+<h2 id="Ghostwill"><a href="#Ghostwill" class="headerlink" title="Ghostwill"></a>Ghostwill</h2><p>A responsive ghost theme<br><a href="https://github.com/foru17/ghostwill" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/8838134da8d37cb32eb56e22a7805c44249d09a0/687474703a2f2f66696c652e697332362e636f6d2f77702d696d6167652f323031342f30342f67686f737477696c6c2e706e67" alt="Ghostwill"></p>
+<h2 id="boo"><a href="#boo" class="headerlink" title="boo"></a>boo</h2><p>Boo - A beautiful, clean, and responsive theme for Ghost.<br><a href="https://github.com/tenoku/boo" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/254b84975dffc14fe164a2f1702b124c09f1eaa2/687474703a2f2f692e696d6775722e636f6d2f664875676b77352e706e67" alt="boo"></p>
+<h2 id="Affinity"><a href="#Affinity" class="headerlink" title="Affinity"></a>Affinity</h2><p>Affinity is a clean, minimal, modern theme that focus on content for Ghost.<br><a href="https://github.com/Showfom/Affinity" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/41477211c7cf2ff1a5d4fca8030fe8c00bf0d65d/68747470733a2f2f73622e73622e73622f706f73742d696d616765732f616666696e6974792d6465736b746f702e706e673f763d312e322e30" alt="boo"></p>
+<h2 id="Yasuko"><a href="#Yasuko" class="headerlink" title="Yasuko"></a>Yasuko</h2><p>A Ghost theme<br><a href="https://github.com/foru17/Yasuko" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/326db2e37a423e28bc32e30fd3f197aa44ae09e8/68747470733a2f2f6c756f6c65696f72672e62302e7570616979756e2e636f6d2f626c6f672f323031352f31322f796173756b6f322e6a7067" alt="Yasuko"></p>
+<h2 id="middleman-casper"><a href="#middleman-casper" class="headerlink" title="middleman-casper"></a>middleman-casper</h2><p>Casper theme (Ghost) for Middleman-Blog<br><a href="https://github.com/danielbayerlein/middleman-casper" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/danielbayerlein/middleman-casper/master/screenshot.png" alt="Middleman"></p>
+<h2 id="Coder"><a href="#Coder" class="headerlink" title="Coder"></a>Coder</h2><p>Ghost Theme<br><a href="https://github.com/dongri/Coder" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/dongri/Coder/master/coder.png" alt="Coder"></p>
+<h2 id="Portfolio"><a href="#Portfolio" class="headerlink" title="Portfolio"></a>Portfolio</h2><p>Free theme for Ghost prepared by GavickPro.<br><a href="https://github.com/GavickPro/Portfolio-Free-Ghost-Theme" target="_blank" rel="noopener">项目地址</a> <a href="http://portfolio-gk.ghost.io/" target="_blank" rel="noopener">演示地址</a><br><img src="https://camo.githubusercontent.com/64699e9572c585fe2d16ae7ef363036a004e89c8/68747470733a2f2f7777772e67617669636b2e636f6d2f7265732f667265652d706f7274666f6c696f2d67686f73742d7468656d652d67617669636b70726f2e6a7067" alt="Portfolio"></p>
+<h2 id="Solar-Theme-for-Ghost"><a href="#Solar-Theme-for-Ghost" class="headerlink" title="Solar Theme for Ghost"></a>Solar Theme for Ghost</h2><p>A Ghost port of my previous Jekyll theme, which is based on the Solarized color palette<br><a href="https://github.com/mattvh/solar-theme-ghost" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/623d46f1926b771ecb2cbbea9fbbb302cab3851d/687474703a2f2f692e696d6775722e636f6d2f5039344a3639532e706e67" alt="Solar Theme for Ghost"></p>
+<h2 id="Perfetta"><a href="#Perfetta" class="headerlink" title="Perfetta"></a>Perfetta</h2><p>Simple restaurant blog theme for Ghost<br><a href="https://github.com/GavickPro/Perfetta-Free-Ghost-Theme" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/73e2fd08aaf25c290c999c64eba232c6ec4deba4/68747470733a2f2f7777772e67617669636b2e636f6d2f7265732f667265652d72657374617572616e742d636f6666652d67686f73742d7468656d652d67617669636b70726f2e6a7067" alt="Perfetta"></p>
+<h2 id="ghost-interphase-theme"><a href="#ghost-interphase-theme" class="headerlink" title="ghost-interphase-theme"></a>ghost-interphase-theme</h2><p>A ghost theme based off of templated.co/interphase<br><a href="https://github.com/DeviaVir/ghost-interphase-theme" target="_blank" rel="noopener">项目地址</a><br><img src="https://cloud.githubusercontent.com/assets/777823/7796254/af798436-02dd-11e5-890d-de51253d26a3.png" alt="ghost-interphase-theme"></p>
+<h2 id="Buster"><a href="#Buster" class="headerlink" title="Buster"></a>Buster</h2><p>A responsive, clean card theme for the Ghost blogging platform.<br><a href="https://github.com/daanbeverdam/buster" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/daanbeverdam/buster/master/assets/images/buster-theme-for-ghost-desktop.png" alt="Buster - A theme for the Ghost blogging platform"></p>
+<h2 id="Austere"><a href="#Austere" class="headerlink" title="Austere"></a>Austere</h2><p>An elegant AJAX driven theme for Ghost by Peter Amende.<br><a href="https://github.com/zutrinken/austere" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/zutrinken/austere/master/src/screenshot-desktop.jpg" alt="Austere"></p>
+<h2 id="Silent"><a href="#Silent" class="headerlink" title="Silent"></a>Silent</h2><p>Free Ghost Theme - Silent<br><a href="https://github.com/C129H223N3O54/Silent-theme" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/0c669ba7585f4cb5ae96e98c1406c1db3cbeb288/687474703a2f2f692e696d6775722e636f6d2f674c774f4c4e742e6a7067" alt="Silent"></p>
+<h2 id="ghoststa"><a href="#ghoststa" class="headerlink" title="ghoststa"></a>ghoststa</h2><p>Responsive, minimalistic, clean and content-oriented theme, inspired by GitHub. This time for Ghost.<br><a href="https://github.com/nehalist/ghoststa" target="_blank" rel="noopener">项目地址</a> <a href="http://ghoststa.nehalist.io/" target="_blank" rel="noopener">演示地址</a><br><img src="https://raw.githubusercontent.com/nehalist/ghoststa/master/screenshot.png" alt="ghoststa"></p>
+<h2 id="hexo-vno"><a href="#hexo-vno" class="headerlink" title="hexo-vno"></a>hexo-vno</h2><p>这个主题是修改自onevat的vno, 它遵从简洁和响应式的设计风格，拥有一个独立的封面，易于集成的 Disqus 评论和多说系统，Google Analytics,字体图标以及多种颜色。<br><a href="https://github.com/kevin09002/hexo-theme-vno" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/kevin09002/hexo-theme-vno/master/source/images/show/list.png" alt="hexo-vno"></p>
+<h2 id="Hikari-no-Ghost"><a href="#Hikari-no-Ghost" class="headerlink" title="Hikari no Ghost"></a>Hikari no Ghost</h2><p>Theme for the Ghost blogging platform<br><a href="https://github.com/belen-albeza/hikari-no-ghost-theme" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/belen-albeza/hikari-no-ghost-theme/master/screenshot-preview.png" alt="Hikari no Ghost"></p>
+<h2 id="Ghost-Theme-Typescript"><a href="#Ghost-Theme-Typescript" class="headerlink" title="Ghost Theme Typescript"></a>Ghost Theme Typescript</h2><p>A minimal ghost theme.<br><a href="https://github.com/artchen/ghost-theme-typescript" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/8d614ff4eb919e8d423dd20c66267bfa262658e5/687474703a2f2f61727469666163742e6d652f696d616765732f67686f73742d7468656d652d747970657363726970742d73637265656e73686f742e706e67" alt="Ghost Theme Typescript"></p>
+<h2 id="Ellie"><a href="#Ellie" class="headerlink" title="Ellie"></a>Ellie</h2><p>A theme for Ghost<br><a href="https://github.com/thomascullen/Ellie" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/d26b9fc4fd0273c61347174f19f21dadc4dcb4ac/687474703a2f2f6933392e74696e797069632e636f6d2f32647562306b362e706e67" alt="Ellie"></p>
+<h2 id="Donnie-Dark"><a href="#Donnie-Dark" class="headerlink" title="Donnie Dark"></a>Donnie Dark</h2><p>Donnie Dark is dark, responsive, customizable theme for Ghost 0.5+ blogs. Name of the theme is hats-off for a great movie.<br><a href="https://github.com/kulttuuri/donnie-dark" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/51921075ff64d8d30340f4b39e489ded0b0a77cf/687474703a2f2f692e696d6775722e636f6d2f66315442634c782e6a7067" alt="Donnie Dark"></p>
+<h2 id="skywalker"><a href="#skywalker" class="headerlink" title="skywalker"></a>skywalker</h2><p>一款material design风格的响应式简约ghost博客主题<br><a href="https://github.com/flute/skywalker" target="_blank" rel="noopener">项目地址</a> <a href="https://www.ldsun.com/" target="_blank" rel="noopener">演示地址</a><br><img src="https://raw.githubusercontent.com/flute/skywalker/master/screenshoot/pc2.png" alt="skywalker"></p>
+<h2 id="toxni-theme"><a href="#toxni-theme" class="headerlink" title="toxni-theme"></a>toxni-theme</h2><p>A ghost blog theme create by toxni.<br><a href="https://github.com/Toxni/toxni-theme" target="_blank" rel="noopener">项目地址</a> <a href="http://toxni.com/" target="_blank" rel="noopener">演示地址</a></p>
+<h2 id="Jian-Ghost"><a href="#Jian-Ghost" class="headerlink" title="Jian-Ghost"></a>Jian-Ghost</h2><p>Jian，遵循黑白调、简洁风、高性能、以纯写作为主而诞生的一款Ghost主题；<br><a href="https://github.com/Weic96/Jian-Ghost" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/c97efe2e00455b4fa50460b2e382a3293b010fa6/68747470733a2f2f63646e2e7765696339362e636e2f776562736974652f362f63332f62373332343063643639613066396537363232633061626664333635392e706e67" alt="Jian"></p>
+<h2 id="Ghost-Flat"><a href="#Ghost-Flat" class="headerlink" title="Ghost-Flat"></a>Ghost-Flat</h2><p>Flat theme for a Ghost Blog<br><a href="https://github.com/AchoArnold/Ghost-Flat" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/AchoArnold/Ghost-Flat/master/ghost-flat-main.jpg" alt="Ghost-Flat"></p>
+<h2 id="Albireo"><a href="#Albireo" class="headerlink" title="Albireo"></a>Albireo</h2><p>A simple theme for Ghost<br><a href="https://github.com/santonocito/albireo" target="_blank" rel="noopener">项目地址</a><br><img src="https://camo.githubusercontent.com/ef9b29304b2d432a7b320fc5fe392ab03869c31f/68747470733a2f2f7261772e6769746875622e636f6d2f73616e746f6e6f6369746f2f616c626972656f2f6d61737465722f73637265656e73686f742e706e67" alt="Albireo"></p>
+<h2 id="White-Block-Ghost"><a href="#White-Block-Ghost" class="headerlink" title="White-Block-Ghost"></a>White-Block-Ghost</h2><p>White-Block是一个以白色立体方块为题的Ghost主题(模板,theme)<br><a href="https://github.com/Weic96/White-Block-Ghost" target="_blank" rel="noopener">项目地址</a><br><img src="https://raw.githubusercontent.com/Weic96/White-Block-Ghost/master/about-images/white-block.jpg" alt="White-Block-Ghost"></p>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : 王海 <br/>
+        
+        原文链接 : <a href="">https://blog.whai.me/2018/02/11/ghost-themes/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/Ghost/">
+              #Ghost
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/2018/02/08/install-shadowsocks/" target="_self">搭建 Shadowsocks 服务器</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/2018/03/01/golang-1-hello-world/" target="_self">Go 入门教程（1）Hello World</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz",
+      appKey: "WlHSVnCdyWtotqoPUPn1NQuQ",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("QFjwJTVMzCFFGqsPvr2VXH0J-gzGzoHsz", "WlHSVnCdyWtotqoPUPn1NQuQ");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    我疯狂地挥舞着键盘，郑重地敲下了：<span class="my-face">Hello World</span>
+    <br>
+    Theme - <a href="#">BMW</a>  💗 Powered by <a href="https://www.whai.me">王海</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
